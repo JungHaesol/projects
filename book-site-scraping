@@ -1,6 +1,6 @@
-import requests #to make requests to the required page
-import bs4 #contains BS for pulling data out of HTML and XML files 
-import pandas as pd #to convert our data to a dataframe 
+import requests 
+import bs4
+import pandas as pd 
 
 
 #####################################################################
@@ -14,9 +14,11 @@ urls = []
 
 
 
-no_of_pages = 5 #number of pages to be selected 
+no_of_pages = 5 # number of pages to be selected 
+# 선택될 페이지의 수 
 
-### looping through the required pages and selecting the pages accordingly
+### looping through the required pages and selecting the pages accordingly ### 
+### 필요한 페이지를 루핑하여, 그에 따라서 페이지 선택 ###
 for i in range(1,no_of_pages+1): #to include the last page
     url=('http://books.toscrape.com/catalogue/page-{}.html'.format(i))
     pages.append(url)
@@ -30,15 +32,17 @@ for item in pages:
     page=requests.get(item)
     soup=bs4.BeautifulSoup(page.text,'html.parser')
 
-#print(soup)  ----  OUTPUT LOOKS UGLY 
-#print(soup.prettify())  ----  OUTPUT IS MORE ORGANISED 
+#print(soup)  ----  OUTPUT LOOKS UGLY  ----  출력값이 복잡하고 해석 어려움
+#print(soup.prettify())  ----  OUTPUT IS MORE ORGANISED  ---- 출력값이 더 정리되어 나옴
 
 
 
 ### the titles (the titles have h3 tags) ###
+### 책 제목 출력하기 (제목은 h3 태그가 있다) ###
 for t in soup.findAll('h3'):
     titless=t.getText() 
     title.append(titless)  # now the title list is filled
+    # title 리스트가 가득찼다
     #print(titless) 
 
 #print(title) 
@@ -46,9 +50,11 @@ for t in soup.findAll('h3'):
 
 
 ### the prices ###
+### 가격 ###
 for p in soup.find_all('p',class_='price_color'):
     price = p.getText()
     prices.append(price)  # now the prices list is filled
+    # prices 리스트가 가득찼다 
     ###print(price) 
 
 #print(prices)  
@@ -56,10 +62,12 @@ for p in soup.find_all('p',class_='price_color'):
 
 
 ### the ratings ###
+### 평점 ###
 for s in soup.find_all('p',class_='star-rating'):
     for k,v in s.attrs.items(): #to read about attr: https://www.attrs.org/en/stable/, k will contain the class(u can print(k) to see what is inside, V is going to contain a list like ['star-rating', 'Two'], we use v[1] to get the second item which is the actual ratings)
         star=v[1]
         ratings.append(star)  # now the ratings list is filled
+        # ratings 리스트가 가득찼다
         #print(star) 
 
 #print(ratings) 
@@ -67,14 +75,18 @@ for s in soup.find_all('p',class_='star-rating'):
 
 
 ### image urls ###
-divs=soup.find_all('div',class_='image_container') #getting all the 'div' tags in the class 'image_container'
+### 이미지의 URl ###
+divs=soup.find_all('div',class_='image_container') # getting all the 'div' tags in the class 'image_container'
+# 'image_container' 클래스에 있는 모든 'div' 태그를 얻기
 #print(divs)
 for thumbs in divs:
     tagss=thumbs.find('img',class_='thumbnail')
     #print(taggs)
     links='http://books.toscrape.com/' + str(tagss['src'])
-    newlinks = links.replace('..','') #gets rid of '..', makes links more readable
+    newlinks = links.replace('..','') # gets rid of '..', makes links more readable 
+    # '..' 부분을 제거함으로써 링크를 읽기 쉽게 만들기
     urls.append(newlinks) # now the urls list is filled
+    # urls 리스트가 가득찼다
 
 #print(urls)  
 
