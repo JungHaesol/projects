@@ -1,3 +1,9 @@
+# 정해솔
+
+# https://books.toscrape.com/ 이 스크래핑 (웹사이트의 구조적 특징을 파악한 후 필요한 정보를 골라내어 받아오는 것) 연습용 사이트의 정보를 파이썬 
+코딩으로 가져올 것이다. 책의 제목, 가격, 평점 등을 스크래핑에 필요한 라이브러리의 도움을 받아 볼 수 있게 될 것이다. 
+
+
 import requests 
 import bs4
 import pandas as pd 
