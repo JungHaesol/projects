@@ -1,3 +1,10 @@
+# 정해솔
+
+# 위키백과의 특정한 페이지의 정보를 스크래핑 기술로 가져올 것이다. 페이지를 검사하여 필요한 태그가 무엇인지 파악하고, 그것들을 사용하여 제목,
+부제목 등과 같은 정보를 찾을 수 있을 것이다. 또한, 위키백과 고유의 라이브러리가 따로 있으니, 훨씬 편하게 위키백과에 필요한 정보를 파이썬 코딩
+으로 받을 것이다. 
+
+
 import requests #to make requests to the required page
 # 사이트에 요청을 전달하기 위해 
 import bs4 #contains BS for pulling data out of HTML and XML files 
