@@ -1,6 +1,9 @@
 import requests #to make requests to the required page
+# 사이트에 요청을 전달하기 위해 
 import bs4 #contains BS for pulling data out of HTML and XML files 
+# BeautifulSoup로 HTML 및 XML 파일에서 데이터를 빼낸다
 import pandas as pd #to convert our data to a dataframe 
+# 데이터를 데이터프레임으로 변환시키기 위해
 
 
 
@@ -10,45 +13,51 @@ import pandas as pd #to convert our data to a dataframe
 
 
 ourdata = requests.get('https://en.wikipedia.org/wiki/Artificial_intelligence')
-#print(ourdata.text)  ----  used to check the data extracted using requests 
+#print(ourdata.text)  ----  used to check the data extracted using requests  ----  requests로 빼낸 데이터를 확인하기 위해
 
 
 
 bsp = bs4.BeautifulSoup(ourdata.text,'xml') # parsing data. the 'xml' at the end specifies the format we want
-#print(bsp)  -----  again, used to check what it extracted
+# 데이터 파싱. 끝에 있는 'xml'은 원하는 형식을 지정한다
+#print(bsp)  
 
 
 
-titles = bsp.select('title') # selects the 'title' tax part of the whole code and extracts it
+titles = bsp.select('title') # selects the 'title' tag part of the whole code and extracts it
+# 코드에서 'title' 태그를 모두 추출한다
 #print(titles) 
 
 
 
-notaxtitle = titles[0].getText() #removes tax
-#print(notaxtitle) 
+notagtitle = titles[0].getText() # removes tags 
+# 출력된 텍스트에서 태그를 없앤다
+#print(notagtitle) 
 ### OR you can just print it without setting any variables ###
+### 'notagtitle' 같은 변수를 설정하고 싶지 않다면, 이렇게 볼 수도 있다 ### 
 #print(titles[0].getText()) 
 
 
 
-title_class = bsp.select('h2') #selects the 'h2' tax part of the whole code. try replacing with '.mw-headline'
+title_class = bsp.select('h2') # selects the 'h2' tag part of the whole code. try replacing with '.mw-headline' 
+# 코드에서 'h2' 태그 부분을 선택한다. '.mw-headline'으로 교체해보기
 #print(title_class)
 
 ### extracting the text out of 'title_class' ###
+### 'title_class' 태그에서 텍스트 부분만 추출하기 ###
 #for i in title_class:
     #print(i.text)  
 
-#print(title_class[5].getText())  ----  try putting different numbers in the brackets. "count from zero!!!"
+#print(title_class[5].getText())  ----  try putting different numbers in the brackets. "count from zero!!!"  ----  다른 숫자를 [] 사이에 넣어보기. 0부터 센다는 점 잊지 말기
 
 
 
-#print(bsp.select('h3 > span'))  ----  try this and find out what it does
+#print(bsp.select('h3 > span')) 
 
 
 
-#print(bsp.select('link'))  ----  extracts all 'link' tags
+#print(bsp.select('link'))  ----  extracts all 'link' tags  ----  모든 'link' 태그를 추출
 
-#print(bsp.select('img'))  ----  extracts all 'img' tags
+#print(bsp.select('img'))  ----  extracts all 'img' tags  ----  모든 'img' 태그를 추출
 
 
 
@@ -58,18 +67,20 @@ title_class = bsp.select('h2') #selects the 'h2' tax part of the whole code. try
 
 
 
-import wikipedia #after installing wikipedia library 
-from pprint import pprint #apparently makes things more readable
+import wikipedia # after installing wikipedia library 
+# 위키백과 라이브러리 설치 후 
+from pprint import pprint # apparently makes things more readable 
+# 텍스트를 더 읽기 쉽게 해줌
 
 
 
 
-#print(wikipedia.search('south park'))  ----  gives you pages related to your search 
+#print(wikipedia.search('computer'))  ----  gives you pages related to your search  ----  검색한 것과 관련된 페이지를 줌
 
-southpark = wikipedia.page(wikipedia.search('south park')[0])
-#print(southpark) 
-#print(dir(southpark))  ----  shows you what kind of info they can provide
-#print(southpark.summary)  ----  "summary" can be replaced with "title", "url" etc. 
-#print(southpark.content)  ----  shows just about everything on the page
-#print(southpark.images)  ----  extracts all images
-#print(southpark.url)  ----  gives you the url of the page
+computer = wikipedia.page(wikipedia.search('computer')[0])
+#print(computer) 
+#print(dir(computer))  ----  shows you what kind of info they can provide  ----  어떤 정보가 제공 가능한지 볼 수 있음
+#print(computer.summary)  ----  "summary" can be replaced with "title", "url" etc.  ----  "summary" 대신에 "title", "url" 등을 넣으면 그에 맞게 나옴
+#print(computer.content)  ----  shows just about everything on the page  ----  페이지에서 제공 가능한 정보를 모두 표시
+#print(computer.images)  ----  extracts all images  ----  모든 이미지를 추출 
+#print(computer.url)  ----  gives you the url of the page  ----  페이지의 URL을 줌
