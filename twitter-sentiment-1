@@ -1,0 +1,93 @@
+# 정해솔 
+
+# 이번에는 데이터 마이닝, 갑정분석을 설명하는 Udemy의 한 강의를 보면서 따라한 것이다. 강의는 Google Colab를 이용했다. 
+# 구글 드라이브에 저장해놓은 파일 "tweet_data.csv"에는 약 18000개의 샘플 트윗을 가지고 있으며, 긍정적인지 부정적인지 파악한 후 각각 감정에 무슨 단어들이 제일 많이 사용했는지를 
+# 한 눈에 알 수 있을 것이다. 
+
+
+# pydrive and needed libraries
+# pydrive 및 필요한 라이브러리들 
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
+from google.colab import auth
+from oauth2client.client import GoogleCredentials
+
+# authenticate and create pydrive client
+# pydrive 클라이언트 인증 및 생성
+auth.authenticate_user()
+gauth = GoogleAuth()
+gauth.credentials = GoogleCredentials.get_application_default()
+drive = GoogleDrive(gauth)
+
+##############################################################################################
+
+file_id = '1owv8k8B9BP2oYZyPutQhVJIQNLmyzos6' # ID in Google Drive
+# 코드가 사람마다 다르게 나올 것이다. 
+downloaded = drive.CreateFile({'id': file_id})
+
+# Save file in Colab memory
+# Colab 메모리에 파일 저장
+downloaded.GetContentFile('tweet_data.csv')  
+
+
+
+import pandas as pd
+import numpy as np
+
+
+
+df = pd.read_csv("tweet_data.csv") # read dataframe stored in Google Drive (csv format)
+# 구글 드라이브에 저장된 데이터프레임 읽기 
+
+df.sample(10) # see 10 random tweets 
+# 10개의 트윗이 보일 것이다 (랜덤)
+
+#print("Number of Tweets: {}".format(len(df))) # see the total number of tweets 
+# 전체적으로 총 몇개의 트윗이 있는지 확인 
+
+
+
+### print a tweet + its sentiment based on 'tweet ID' ###
+### 트윗과 그 트윗에 내제된 감정을 'tweet ID'에 따라 프린트하기 ###
+tweet_id = 6234 # replace with different numbers, see what you get  ----  다른 숫자 넣어보고 뭐가 나오는지 보기
+tweet = df.iloc[tweet_id] 
+
+#print("Tweet: {}".format(tweet["tweet_text"]))
+#print("Tweet sentiment: {}".format(tweet["sentiment"]))
+
+##############################################################################################
+
+import matplotlib.pyplot as plt
+
+sentiment_count = df["sentiment"].value_counts()
+plt.pie(sentiment_count, labels=sentiment_count.index,
+        autopct = '%1.1f%%', shadow=True, startangle=140)
+plt.show() # check the ratio of pos-neg tweets using the library imported
+# 가져온 라이브러리를 이용하여 파이 차트로 긍정, 부정 트윗의 비율 보기
+
+
+
+### check total number of pos/neg tweets ###
+### 총 몇개의 긍정 및 부정 트윗이 있는지 확인 ###
+#print("Number of + tweets: {}".format(df[df["sentiment"]=="positive"].count()[0]))
+#print("Number of - tweets: {}".format(df[df["sentiment"]=="negative"].count()[0]))
+
+##############################################################################################
+
+from wordcloud import WordCloud
+
+pos_tweets = df[df["sentiment"]=="positive"]
+txt = " ".join(tweet.lower() for tweet in pos_tweets["tweet_text"])
+wordcloud = WordCloud().generate(txt)
+plt.imshow(wordcloud, interpolation="bilinear")
+plt.axis("off")
+plt.show() # see the most frequently used words in positive tweets in the form of a word cloud
+# 단어 구름 형태로 긍정 트윗에 가장 많이 사용되는 단어들 확인 
+
+neg_tweets = df[df["sentiment"]=="negative"]
+txt = " ".join(tweet.lower() for tweet in neg_tweets["tweet_text"])
+wordcloud = WordCloud().generate(txt)
+plt.imshow(wordcloud, interpolation="bilinear")
+plt.axis("off")
+plt.show() # negative tweets 
+# 이번에는 부정 트윗
