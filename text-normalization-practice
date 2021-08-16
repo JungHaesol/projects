@@ -1,0 +1,70 @@
+# 정해솔 
+
+# 트위터의 게시물인 '트윗'들의 감정분석을 하기 전에는 일단 텍스트를 최대한 깔끔하게 만들어야 한다. 
+# 예를 들어 태그 부분 (@ 부분)은 다른 사람에게 언급을 하는 것이지만, 통합시키기 위해 기본적인 "twitteruser"로 바꾼다. 
+# 텍스트 정규화(다양하게 표현할 수 있는 단어들을 통합함으로써 같은 단어로 보는것)라는 개념과 연관이 있다. 
+
+
+
+
+
+import re
+import emoji # after installing the 'emoji' package in the terminal (pip install emoji --upgrade)
+# 'emoji' 패키지를 터미널에 설치한 후 (pip install emoji --upgrade)
+
+
+
+
+tweet = "RT @Google I love Python! 👍 https://Udemy.com #NLP #Fun" # Text I will modify 
+# 수정할 텍스트
+
+
+
+
+### Deleting the "RT" part as it is useless when it comes to sentiment analysis ###
+### 감정분석에 도움이 안되기에 "RT" 부분 없애기 ###
+def replace_retweet(tweet, default_replace=""):
+    tweet = re.sub('RT\s+', default_replace, tweet)
+    return tweet 
+
+#print("Processed tweet: {}".format(replace_retweet(tweet)))
+
+
+
+### Replacing the mention part (@ part) with a general, default substitute (MACHINES LIKE SIMPLER TEXT) ###
+### 태그 부분 (@ 부분)을 기본적인 "twitteruser"로 대체하기 (기계들은 단순한 텍스트를 선호) ###
+def replace_user(tweet, default_replace="twitteruser"):
+  tweet = re.sub('\B@\w+', default_replace, tweet)
+  return tweet
+
+#print("Processed tweet: {}".format(replace_user(tweet)))
+
+
+
+### Transforming emojis into text (Although emojis are very useful when it comes to sentiment analysis, machines prefer text) ###
+### 이모티콘을 텍스트 형식으로 바꾸기 (이모티콘은 감정 분석에 무척 중요하지만, 기계는 텍스트를 선호) ###
+def demojize(tweet):
+  tweet = emoji.demojize(tweet)
+  return tweet 
+
+#print("Processed tweet: {}".format(demojize(tweet)))
+
+
+
+### Deleting URLS as they barely help analyze sentiments ###
+### 감정분석에 웬만하면 도움이 안되기에 URL 제거 ###
+def replace_url(tweet, default_replace=""):
+  tweet = re.sub('(http|https):\/\/\S+', default_replace, tweet)
+  return tweet
+
+#print("Processed tweet: {}".format(replace_url(tweet)))
+
+
+
+### Getting rid of the "#" sign in hashtags (MACHINES LIKE SIMPLER TEXT) ###
+### 해시태그에 "#" 부분 제거 (기계는 단순한 텍스트를 선호) ###
+def replace_hashtag(tweet, default_replace=""):
+  tweet = re.sub('#+', default_replace, tweet)
+  return tweet
+
+#print("Processed tweet: {}".format(replace_hashtag(tweet)))
