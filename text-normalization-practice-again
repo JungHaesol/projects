@@ -1,0 +1,61 @@
+# 정해솔
+
+# 특정한 문장을 가지고 몇몇 특징들을 바로잡을 것이다. 예를 들어 모든 문자를 소문자로 바꾸
+
+
+
+
+
+import re
+import contractions # after "pip install contractions" in the terminal
+# 터미널에 "pip install contractions" 실행 후 
+
+
+
+
+
+tweet = "Coooooooool... I've got to study coding!!!!!!!"
+
+
+
+### Turning all the letters into lowercase ones ###
+### 모두 소문자로 바꾸기 ###
+def to_lowercase(tweet):
+    tweet = tweet.lower()
+    return tweet
+#print("Result: {}".format(to_lowercase(tweet)))
+
+
+
+### Simplifying repeated letters ###
+### 반복되는 글자 단순화 ###
+def letter_rep(tweet):
+    tweet = re.sub(r'(.)\1+', r'\1\1', tweet)
+    return tweet
+#print("Result: {}".format(letter_rep(tweet)))
+
+
+
+### Simplifying repeated punctuation marks ###
+### 반복되는 구두점 단순화 ###
+def punc_rep(tweet, default_replace=""):
+    tweet = re.sub(r'[\?\.\!]+(?=[\?\.\!])', default_replace, tweet)
+    return tweet 
+#print("Result: {}".format(punc_rep(tweet)))  
+
+
+
+### Replacing contractions with their extended forms (ex. Don't -> Do not) ###
+### 축약형 단어를 본래 모습으로 대체하기 (ex. Don't -> Do not) ###
+# First method 첫째 방법
+def fix_cont(tweet):
+    for a, b in contractions.contractions_dict.items():
+        tweet = tweet.replace(a,b) 
+    return tweet
+#print("Result: {}".format(fix_cont(tweet)))  ----  "I've" -> "I have"
+
+# Second method 둘쨰 방법 
+def fix_cont2(tweet):
+    tweet = contractions.fix(tweet)
+    return tweet
+#print("Result: {}".format(fix_cont2(tweet)))
