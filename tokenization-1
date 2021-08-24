@@ -1,0 +1,22 @@
+# 정해솔 
+
+# 정보 처리를 위하여 토큰화가 무엇인지 배워볼 것이고, 쉬운 코드를 통해 학습할 것이다. 
+# Tokenization: Seperating text into smaller chunks 
+# 토큰화: 텍스트를 더 작은 덩어리로 나누는 것
+
+
+
+
+import nltk # after "pip install nltk" in the terminal 
+# 터미널에 "pip install nltk" 실행 후 
+from nltk.tokenize import word_tokenize 
+
+tweet = "These are 5 different words!"
+
+# function that takes text and returns a list of tokens 
+# 텍스트를 입력하면 토근 리스트를 출력하는 함수 
+def tokenize(tweet):
+    tokens = word_tokenize(tweet) 
+    return tokens 
+
+print("Tweet tokens: {}".format(tokenize(tweet)))
